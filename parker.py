@@ -45,7 +45,8 @@ connection.allowed_gai_family = _allowed_gai_family
 # CONFIGURATION
 # =========================================================
 
-BASE_DIR = "/bws/phoenix"
+BASE_DIR = os.getenv("PARKER_BASE_DIR", "/bws/phoenix")
+
 
 # Global Dry Run Flag
 DRY_RUN = "--dry-run" in sys.argv

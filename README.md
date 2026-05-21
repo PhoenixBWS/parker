@@ -170,9 +170,11 @@ CLOUDFLARE_ACCOUNT_ID=your_cloudflare_account_id
 DEFAULT_SSL_EMAIL=ssl@yourdomain.com
 MAIL_HOSTNAME=mail.yourdomain.com
 DKIM_SELECTOR=default
+PARKER_BASE_DIR=/var/www  # Optional: base path where websites are deployed (defaults to /bws/phoenix)
 ```
 
 > **Note:** `PARKER_SCRIPT_PATH` and `PARKER_VENV_PYTHON` are auto-derived from the project directory layout. You only need to set them in `.env` if your `parker.py` or venv lives outside the standard structure.
+
 
 
 ### 4. Verify CLI Works
