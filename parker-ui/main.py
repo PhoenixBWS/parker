@@ -26,8 +26,13 @@ def load_env(file_path=".env"):
                     key, value = line.split("=", 1)
                     os.environ[key.strip()] = value.strip()
 
-# Load environment variables from .env file
-load_env(BASE_DIR / ".env")
+# Load environment variables (check parent directory first, fall back to current directory)
+parent_env = BASE_DIR.parent / ".env"
+if parent_env.is_file():
+    load_env(parent_env)
+else:
+    load_env(BASE_DIR / ".env")
+
 
 # Setup templates and static files
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))

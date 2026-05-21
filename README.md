@@ -174,11 +174,6 @@ DKIM_SELECTOR=default
 
 > **Note:** `PARKER_SCRIPT_PATH` and `PARKER_VENV_PYTHON` are auto-derived from the project directory layout. You only need to set them in `.env` if your `parker.py` or venv lives outside the standard structure.
 
-Symlink it into the UI directory so both `parker.py` and `main.py` read the same file:
-
-```bash
-ln -s /path/to/parker/.env /path/to/parker/parker-ui/.env
-```
 
 ### 4. Verify CLI Works
 
@@ -342,8 +337,7 @@ In the [Cloudflare Zero Trust Dashboard](https://one.dash.cloudflare.com/):
 ├── parker.py               # CLI provisioning script (runs as root)
 ├── venv/                   # Python virtual environment
 └── parker-ui/
-    ├── .env -> ../.env     # Symlink to shared credentials
-    ├── main.py             # FastAPI application
+    ├── main.py             # FastAPI application (reads ../.env dynamically)
     ├── templates/
     │   └── index.html      # Dashboard UI (single-page)
     └── static/
