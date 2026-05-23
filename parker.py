@@ -241,6 +241,28 @@ def detect_project_type(project_root):
                 
     return None
 
+def check_existing_parking(domain):
+    """Check if a domain appears to be already parked based on local indicators."""
+    indicators = []
+
+    nginx_config = os.path.join(NGINX_SITES_AVAILABLE, f"{domain}.conf")
+    if os.path.exists(nginx_config):
+        indicators.append(f"  \u2705 Nginx config: {nginx_config}")
+
+    nginx_enabled = os.path.join(NGINX_SITES_ENABLED, f"{domain}.conf")
+    if os.path.islink(nginx_enabled):
+        indicators.append(f"  \u2705 Site enabled: {nginx_enabled}")
+
+    project_root = os.path.join(BASE_DIR, domain)
+    if os.path.exists(project_root) and not is_directory_empty(project_root):
+        indicators.append(f"  \u2705 Project directory: {project_root}")
+
+    ssl_dir = f"/etc/letsencrypt/live/{domain}"
+    if os.path.exists(ssl_dir):
+        indicators.append(f"  \u2705 SSL certificate: {ssl_dir}")
+
+    return indicators
+
 def restore_backup(backup_path, original_path):
     """Restores a file from a backup."""
     if DRY_RUN:
@@ -1175,6 +1197,16 @@ def main():
             print("Subdomain   : None")
 
         print(f"Targets     : {', '.join(domains)}")
+
+        # Early detection: check if this domain is already parked
+        parked_indicators = check_existing_parking(domain)
+        if parked_indicators:
+            print(f"\n\u26a0 This domain appears to already be parked:")
+            for indicator in parked_indicators:
+                print(indicator)
+            if not ask_yes_no("\nProceed with re-provisioning anyway?", default="n"):
+                print("\n\U0001f44b Exiting. No changes were made.")
+                sys.exit(0)
 
         log_step("Step 2: Cloudflare Setup", "Configuring DNS records and zones on Cloudflare...")
 

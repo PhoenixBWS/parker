@@ -28,6 +28,7 @@ The dashboard streams every step in real time and presents interactive quick-act
 - **Interactive Terminal** — Full PTY session streamed over WebSocket. Every prompt from `parker.py` appears in the browser with context-aware quick-answer buttons (Yes/No, project type selection, etc.).
 - **Dry Run Mode** — Test the entire provisioning flow without touching DNS, filesystem, or services.
 - **Automatic Rollback** — If any step fails, `parker.py` reverses all changes made during that run (DNS records, files, symlinks, configs).
+- **Duplicate Detection** — Before provisioning begins, parker checks for existing Nginx configs, project directories, and SSL certificates. If the domain is already parked, you're prompted before anything is modified.
 - **Dark / Light / System Theme** — Glassmorphism-styled UI with persistent theme preference.
 - **Zero Trust Ready** — Binds to `127.0.0.1` and is exposed exclusively through a Cloudflare Tunnel with access policies.
 
